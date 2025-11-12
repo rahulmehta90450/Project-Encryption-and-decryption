@@ -1,0 +1,38 @@
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #e1d0d0;
+    }
+    .container {
+        text-align: center;
+    }
+    input, textarea {
+        width: 100%;
+        margin-bottom: 10px;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    textarea {
+        height: 100px;
+    }
+    button {
+        padding: 15px 25px;
+        border-radius: 12px;
+        background-color: #4caf50;
+        color: white;
+        cursor: pointer;
+        border: 2px solid #037041;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .top-left {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }

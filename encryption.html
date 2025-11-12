@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="encryption.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Page</title>
+</head>
+<body>
+    <div class="top-left">
+        <a href="home.html"><img src="back-arrow.svg" alt="Back" width="60" height="75"></a>
+    </div>
+    <div class="container">
+        <h2>Encryption Page</h2>
+        <input type="text" id="plaintext" placeholder="Enter plaintext...">
+        <textarea id="encryptedText" placeholder="Encrypted text..." readonly></textarea>
+        <button onclick="encrypt()">Encrypt</button>
+        <button id="copyButton">Copy</button>
+        <p id="copyMessage" style="display: none; color: green;">Copied to clipboard!</p>
+    </div>
+
+    <script>
+        function encrypt() {
+            const plaintext = document.getElementById('plaintext').value;
+            const key = 5454;
+            const encryptedText = SymmetricKeyEncryption.encrypt(plaintext, key);
+            document.getElementById('encryptedText').value = encryptedText;
+        }
+
+        const SymmetricKeyEncryption = {
+            encrypt: function(text, key) {
+                let encryptedText = '';
+                for (let i = 0; i < text.length; i++) {
+                    const asciiValue = text.charCodeAt(i); 
+                    const binaryValue = asciiValue.toString(2).padStart(8, '0'); 
+                    const reversedBinary = binaryValue.split('').reverse().join('');
+                    const reversedInt = parseInt(reversedBinary, 2);
+                    const quotient = Math.floor(reversedInt / key);
+                    const remainder = reversedInt % key;
+                    encryptedText += remainder.toString().padStart(3, '0') + quotient.toString().padStart(5, '0');
+                }
+                return encryptedText;
+            }
+        };
+
+        // Copy button functionality
+        document.getElementById('copyButton').addEventListener('click', function () {
+            const encryptedText = document.getElementById('encryptedText');
+            const copyMessage = document.getElementById('copyMessage');
+            navigator.clipboard.writeText(encryptedText.value)
+                .then(() => {
+                    copyMessage.style.display = 'block';
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    encryptedText.select();
+                    document.execCommand('copy');
+                    copyMessage.style.display = 'block';
+                });
+        });
+    </script>
+</body>
+</html>

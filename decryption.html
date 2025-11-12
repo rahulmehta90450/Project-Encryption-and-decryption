@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="decryption.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decryption</title>
+</head>
+<body>
+    <div class="top-left">
+        <a href="home.html"><img src="back-arrow.svg" alt="Back" width="60" height="75"></a>
+    </div>
+    <div class="container">
+        <h1>Decryption</h1>
+        <label for="ciphertext">Encrypted Text:</label><br>
+        <input type="text" id="ciphertext" name="ciphertext"><br>
+        <label for="key">Key:</label><br>
+        <input type="number" id="key" name="key" maxlength="4"><br><br>
+        <button onclick="validkeyAndDecrypt()">Decrypt</button><br><br>
+        <label for="decryptedText">Decrypted Text:</label><br>
+        <textarea id="decryptedText" name="decryptedText" rows="4" cols="50"></textarea>
+    </div>
+</body>
+    <script>
+        function validkeyAndDecrypt() {
+            const vaildKey=5454;
+            var key = document.getElementById("key").value;
+            if (Number(key) === vaildKey && !isNaN(key)) {
+               decrypt();
+            }
+                else {
+                    alert("Wrong Input Key!");
+                }
+        }
+
+        function decrypt() {
+            var ciphertext = document.getElementById("ciphertext").value;
+            var key = parseInt(document.getElementById("key").value);
+            var decryptedText = decryptText(ciphertext, key);
+            document.getElementById("decryptedText").value = decryptedText;
+        }
+
+        function decryptText(ciphertext, key) {
+            var decryptedText = '';
+            for (var i = 0; i < ciphertext.length; i += 8) {
+                var substring = ciphertext.substring(i, i + 8);
+                var firstThreeDigits = parseInt(substring.substring(0, 3));
+                var lastFiveDigits = parseInt(substring.substring(3));
+                var multipliedValue = (lastFiveDigits * key) + firstThreeDigits;
+                var binaryValue = multipliedValue.toString(2).padStart(8, '0');
+                var reversedBinary = binaryValue.split('').reverse().join('');
+                var asciiValue = parseInt(reversedBinary, 2);
+                decryptedText += String.fromCharCode(asciiValue);
+            }
+            return decryptedText;
+        }
+    </script>
+</html>
